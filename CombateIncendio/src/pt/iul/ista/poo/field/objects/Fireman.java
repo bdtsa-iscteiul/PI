@@ -1,12 +1,14 @@
 package pt.iul.ista.poo.field.objects;
 
+import java.util.Random;
+
 import pt.iul.ista.poo.utils.Point2D;
 
 public class Fireman extends FireFightObject  {
 
-	private static final int max_water = 15;
+	private static final int max_water = 50;
 	private static final int  max_wood = 25;
-	private int water = 10;
+	private double water = 10;
 	private int wood = 0;
 
 	public Fireman(Point2D p) {
@@ -15,12 +17,15 @@ public class Fireman extends FireFightObject  {
 	}
 	
 
-	public int getWater() {
+	public double getWater() {
 		return water;
 	}
 
 	public void addWater() {
-		water = water + 10;
+		
+		Random r = new Random();
+		water = water + 15 +  r.nextGaussian() * Math.sqrt(8);  // VA Continua , curva de gauss com media de 15 litros
+		
 		if (water > max_water)
 		{
 			water = max_water;
@@ -32,7 +37,7 @@ public class Fireman extends FireFightObject  {
 	}
 
 
-	public void setWater(int water) {
+	public void setWater(double water) {
 		this.water = water;
 	}
 

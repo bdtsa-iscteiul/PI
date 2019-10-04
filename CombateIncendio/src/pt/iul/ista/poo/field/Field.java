@@ -37,7 +37,7 @@ public class Field implements Observer {
 	private static final int MIN_X = 5;
 	private static final int MIN_Y = 5;
 	private static final int key_space = 32;
-	private static final int initial_fires = 5;
+	//private static final int initial_fires = 5;
 	private static final int timeLim = 1200;
 	private static final int KEY_SAVE = 83;
 	private static final int KEY_LOAD = 76;
@@ -182,7 +182,8 @@ public class Field implements Observer {
 
 		Random r = new Random ();
 
-		while (fires.size()!= initial_fires) {
+		int nfogos = 4 + r.nextInt(4);    //    VA Discreta uniforme , igual probabilidade entre 4,5,6 e 7 fogos
+		while (fires.size()!= nfogos) {
 
 			Point2D p = new Point2D (r.nextInt(max_x),r.nextInt(max_y));
 
@@ -383,7 +384,7 @@ public class Field implements Observer {
 			insert ();         
 			remove();
 		}
-		ImageMatrixGUI.getInstance().setStatusMessage( "  Water: " + f.getWater() + " : 15           "
+		ImageMatrixGUI.getInstance().setStatusMessage( "  Water: " + f.getWater() + " : 50           "
 				+ "       " +  "Wood : " + f.getWood() + "                      " +       "Time: " + time + " : " + timeLim +
 				"                                 Fires: " + nFires() + " : " + (int)(max_x*max_y*0.3));
 		ImageMatrixGUI.getInstance().update();
