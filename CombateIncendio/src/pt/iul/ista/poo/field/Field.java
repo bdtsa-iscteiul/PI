@@ -376,7 +376,7 @@ public class Field implements Observer {
 
 				randomPlane();
 				createSmokes();
-				removeSmokes();
+				//removeSmokes();
 				randomFire();
 			}
             
@@ -445,6 +445,17 @@ public class Field implements Observer {
 			Point2D p = f.getPosition();
 			if (smokeAtPosition(p)==null)
 			{
+				Random r = new Random();
+
+				if (r.nextDouble() < f.smokeProb()) {
+
+					Smoke s = new Smoke (p);
+					addToInsert(s);
+				}
+				else
+					f.setSmokeTimer(f.getSmokeTimer()+1);
+
+				/*
 				List <Point2D> points = neighboursOf(p);
 				if (points.size() >= 3)
 				{
@@ -459,12 +470,12 @@ public class Field implements Observer {
 						Smoke s = new Smoke (p);
 						addToInsert(s);
 					}
-				}
+				}*/
 			}
 		}
 	}
 
-	private void removeSmokes() {
+/*	private void removeSmokes() {
 
 		List <Smoke> smokes = new ArrayList <>();
 		for (FireFightObject f : allObjects)
@@ -495,7 +506,7 @@ public class Field implements Observer {
 		}
 	}
 
-	
+	*/
 	private List<Fire> fireList() {
 	
 		List <Fire> fires = new ArrayList <>();

@@ -8,6 +8,7 @@ import pt.iul.ista.poo.utils.Point2D;
 
 public class Fire extends FireFightObject implements Updatable , Interactable {
 
+private int smokeTimer = 0;
 
 	public Fire (Point2D p) {
 
@@ -40,6 +41,7 @@ public class Fire extends FireFightObject implements Updatable , Interactable {
 			
 				throw new IllegalStateException ("A casa ardeu");
 		}
+
 	}
 
 
@@ -58,6 +60,22 @@ public class Fire extends FireFightObject implements Updatable , Interactable {
 			Field.getInstance().getF().subWater();
 			Field.getInstance().addToRemove(this);
 		}
+	}
+
+
+	public int getSmokeTimer() {
+		return smokeTimer;
+	}
+
+
+	public void setSmokeTimer(int smokeTimer) {
+		this.smokeTimer = smokeTimer;
+	}
+
+
+	public double smokeProb() {
+
+		return 50.0*smokeTimer/4550.0;
 	}
 
 }
