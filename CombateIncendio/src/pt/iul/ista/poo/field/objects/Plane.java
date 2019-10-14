@@ -70,7 +70,7 @@ public class Plane extends FireFightObject implements Updatable {
 
 	public static double planeProb(int fogos)
 	{
-		double n = fogos*Math.sqrt(fogos)/2000.0 - fogos/2000.0;
+		double n = fogos*Math.sqrt(fogos)/1000.0 - fogos/1000.0; //2000
 		return n;
 	}
 	

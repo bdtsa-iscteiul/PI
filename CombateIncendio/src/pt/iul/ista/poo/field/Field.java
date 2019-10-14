@@ -531,10 +531,33 @@ public class Field implements Observer {
 	}
 
 	
-	private void randomPlane() {
+	private void randomPlane() {              // aparece numa fila com uma probabilidade proporcional à percentagem de fogos dessa fila face ao total
 		
 		Random r = new Random ();
+		
+		double a = 0;
+		boolean found = false;
+		int count = 0;
 
+		if (r.nextDouble()<Plane.planeProb(nFires()))
+		{
+			double val = r.nextDouble();
+
+			while (count < max_x && !found) {
+				System.out.println("count = " + count);
+				System.out.println("val = " + val);
+				System.out.println("a = " + a);
+				a = a + (double)(nFireatRow(count))/(double)nFires();
+				if ( val < a )
+				{
+					found = true;
+					newPlane(count);
+				}
+				count++;
+			}
+		}
+		
+/*
 		for (int i = 0; i < max_x; i++)
 		{
 			if (planeAtRow (i) == null)
@@ -546,6 +569,27 @@ public class Field implements Observer {
 				}
 			}
 		}
+*/
+	}
+
+	private void newPlane (int x) {
+		Plane p = new Plane (new Point2D(x,max_y-1));
+		addToInsert(p);
+		
+	}
+
+	public int nFireatRow(int i) {
+
+		int c = 0;
+		for (FireFightObject f : allObjects)
+		{
+			if (f instanceof Fire && f.getPosition().getX() ==  i)
+			{
+				c++;
+			}
+		}
+		return c;
+
 	}
 
 	
