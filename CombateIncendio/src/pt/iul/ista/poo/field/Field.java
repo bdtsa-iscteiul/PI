@@ -437,7 +437,7 @@ public class Field implements Observer {
 	}
 
 
-	private void createSmokes() {
+	private void createSmokes() {               //VA Discreta variável -- depende do tempo
 
 		List <Fire> fires = fireList();
 		for (Fire f : fires)
@@ -531,7 +531,7 @@ public class Field implements Observer {
 	}
 
 	
-	private void randomPlane() {              // aparece numa fila com uma probabilidade proporcional à percentagem de fogos dessa fila face ao total
+	private void randomPlane() {              // VA discreta variável  - aparece numa fila com uma probabilidade proporcional à percentagem de fogos dessa fila face ao total
 		
 		Random r = new Random ();
 		

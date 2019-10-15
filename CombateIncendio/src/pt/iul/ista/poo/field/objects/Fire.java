@@ -73,7 +73,7 @@ private int smokeTimer = 0;
 	}
 
 
-	public double smokeProb() {
+	public double smokeProb() {               
 
 		return 50.0*smokeTimer/4550.0;
 	}

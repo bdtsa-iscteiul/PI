@@ -33,7 +33,12 @@ public class Fireman extends FireFightObject  {
 	}
 	
 	public void subWater(){
-		water--;
+		
+		Random r = new Random();
+		water = water - 2 - r.nextGaussian() * Math.sqrt(1);  // VA Continua , curva de gauss com media de 2 litros
+		
+		if (water < 0)
+			water = 0;
 	}
 
 
