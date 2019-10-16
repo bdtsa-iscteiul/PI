@@ -3,12 +3,14 @@ package pt.iul.ista.poo.field.objects;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 import pt.iul.ista.poo.field.Field;
 import pt.iul.ista.poo.utils.Point2D;
 
 public class Fire extends FireFightObject implements Updatable , Interactable {
 
-private int smokeTimer = 0;
+	private int smokeTimer = 0;
 
 	public Fire (Point2D p) {
 
@@ -25,6 +27,7 @@ private int smokeTimer = 0;
 
 	@Override
 	public void update() {
+		Object[] options = {"Restart", "Quit"};
 
 		List <Terrain> terras = Field.getInstance().burnableTerrainsAroundPosition(getPosition());
 
@@ -33,13 +36,18 @@ private int smokeTimer = 0;
 
 		Terrain thisT = Field.getInstance().terrainAt(getPosition());
 		thisT.destroy();
-		
+
 		if (Field.getInstance().houseNear(getPosition()))
 		{
 			Random r = new Random();
-			if (r.nextDouble() < House.burningProb())
-			
-				throw new IllegalStateException ("A casa ardeu");
+			if (r.nextDouble() < House.burningProb()) {
+				int i = JOptionPane.showOptionDialog(null, "A casa ardeu", "InfoBox: " + "Game OVER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options);
+				//throw new IllegalStateException ("A casa ardeu");
+				if(i == 0)
+					Field.getInstance().restart();
+				else
+					Field.getInstance().quit();
+			}
 		}
 
 	}

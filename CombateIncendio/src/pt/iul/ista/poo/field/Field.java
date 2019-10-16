@@ -12,6 +12,9 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import pt.iul.ista.poo.field.objects.Updatable;
 import pt.iul.ista.poo.field.objects.Fire;
 import pt.iul.ista.poo.field.objects.FireFightObject;
@@ -396,18 +399,46 @@ public class Field implements Observer {
 
 
 	private void checkStatus() {
+		Object[] options = {"Restart", "Quit"};
 		
-		if (nFires() >= (int)(max_x*max_y*0.3))
-			throw new IllegalStateException ("Perdeu! Limite de fogos excedidos!");
+		if (nFires() >= (int)(max_x*max_y*0.3)) {
+			int i=JOptionPane.showOptionDialog(null, "Perdeu! Limite de fogos excedidos", "InfoBox: " + "Game OVER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options);
+			//throw new IllegalStateException ("Perdeu! Limite de fogos excedidos!");
+			if(i == 0)
+				restart();
+			else
+				quit();
+		}
 		
-		if (time >= timeLim)
-			throw new IllegalStateException ("Perdeu! Limite de tempo excedido!");
-		
-		if (nFires() == 0)
-			throw new IllegalStateException ("Parabéns, ganhou!");
-	
+		if (time >= timeLim) {
+			int i = JOptionPane.showOptionDialog(null, "Perdeu! Limite de tempo excedido", "InfoBox: " + "Game OVER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options);
+			//throw new IllegalStateException ("Perdeu! Limite de tempo excedido!");
+			if(i == 0)
+				restart();
+			else
+				quit();
+		}
+		if (nFires() == 0) {
+			int i = JOptionPane.showOptionDialog(null, "Parabens, ganhou!", "InfoBox: " + "Win", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options);
+			//throw new IllegalStateException ("Parabéns, ganhou!");
+			if(i == 0)
+				restart();
+			else
+				quit();
+		}
 	}
 	
+
+	public void quit() {
+		System.exit(0);
+		
+	}
+
+	public void restart() {
+		//System.exit(0);
+		//main(null);
+		
+	}
 
 	public Fountain fountainAt (Point2D p)
 	{
