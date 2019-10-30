@@ -11,7 +11,8 @@ import pt.iul.ista.poo.utils.Point2D;
 public class Fire extends FireFightObject implements Updatable , Interactable {
 
 	private int smokeTimer = 0;
-
+	private int n = 0;
+	
 	public Fire (Point2D p) {
 
 		super(p);
@@ -76,14 +77,17 @@ public class Fire extends FireFightObject implements Updatable , Interactable {
 	}
 
 
-	public void setSmokeTimer(int smokeTimer) {
-		this.smokeTimer = smokeTimer;
+	public void setSmokeTimer() {
+		
+		n++;
+		smokeTimer = smokeTimer + n;
+
 	}
 
 
 	public double smokeProb() {               
 
-		return 50.0*smokeTimer/4550.0;
+		return smokeTimer/55.0;
 	}
 
 }

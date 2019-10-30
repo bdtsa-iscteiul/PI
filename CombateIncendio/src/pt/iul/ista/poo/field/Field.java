@@ -235,13 +235,13 @@ public class Field implements Observer {
 	{
 		isToRemove.add(f);
 	}
-	
+
 	public void remove ()
 	{
 		allObjects.removeAll(isToRemove);
+
 		for (FireFightObject f : isToRemove)
-		ImageMatrixGUI.getInstance().removeImage((ImageTile)f);
-			
+			ImageMatrixGUI.getInstance().removeImage((ImageTile)f);
 		isToRemove.clear();
 	}
 	
@@ -360,6 +360,7 @@ public class Field implements Observer {
 				{
 					if (inBounds(p) && fireAt(p) == null && !lakeAt(p) && !houseAt(p) && fountainAt(p) == null)
 						f.setPosition(p);
+	
 					for (FireFightObject obj : allObjects)
 
 						if (obj instanceof Updatable)
@@ -435,6 +436,14 @@ public class Field implements Observer {
 	}
 
 	public void restart() {
+	
+		for (FireFightObject fo: allObjects)                        
+		{
+			addToRemove(fo);
+		}
+		remove();
+		time = 0;
+		loadscenario();
 		//System.exit(0);
 		//main(null);
 		
@@ -477,14 +486,15 @@ public class Field implements Observer {
 			if (smokeAtPosition(p)==null)
 			{
 				Random r = new Random();
-
-				if (r.nextDouble() < f.smokeProb()) {
-
+				double a = r.nextDouble();
+	
+				if (a < (double)(f.smokeProb())) {
+		
 					Smoke s = new Smoke (p);
 					addToInsert(s);
 				}
 				else
-					f.setSmokeTimer(f.getSmokeTimer()+1);
+					f.setSmokeTimer();
 
 				/*
 				List <Point2D> points = neighboursOf(p);
@@ -575,9 +585,7 @@ public class Field implements Observer {
 			double val = r.nextDouble();
 
 			while (count < max_x && !found) {
-				System.out.println("count = " + count);
-				System.out.println("val = " + val);
-				System.out.println("a = " + a);
+	
 				a = a + (double)(nFireatRow(count))/(double)nFires();
 				if ( val < a )
 				{

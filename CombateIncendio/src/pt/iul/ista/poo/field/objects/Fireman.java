@@ -22,10 +22,20 @@ public class Fireman extends FireFightObject  {
 	}
 
 	public void addWater() {
-		
-		Random r = new Random();
-		water = water + 15 +  r.nextGaussian() * Math.sqrt(8);  // VA Continua , curva de gauss com media de 15 litros
-		
+		// VA Continua , curva de gauss com media de 15 litros
+		Random r = new Random();       
+
+		double x = 0;
+		int media = 15;
+		int sigma = 5;
+
+		while (x<= 0 || x>=30) {
+
+			x = media + sigma* Math.sqrt(-2 * Math.log(r.nextDouble()))* Math.cos(2*Math.PI*r.nextDouble());
+		}
+		water += x;
+
+
 		if (water > max_water)
 		{
 			water = max_water;
