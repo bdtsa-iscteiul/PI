@@ -55,26 +55,26 @@ public class Field implements Observer {
 	private int time;
 	private int lastkey;
 	private Set <Point2D> fires = new HashSet<>();
-    private Set <Point2D> lakes = new HashSet<>();
-	
+	private Set <Point2D> lakes = new HashSet<>();
+
 	public Field (int x, int y)
 	{
 		if (x < MIN_X || x < MIN_Y)
 			throw new IllegalArgumentException ("Dimensoes demasiado pequenas");
-		
+
 		max_x = x;
 		max_y = y;
-		
+
 		instance = this;
 		ImageMatrixGUI.setSize(max_x, max_y);
 		loadscenario();
 	}
-	
+
 	private void loadscenario() {
-		
+
 		for (int i = 0 ; i < max_y ; i++){
 			for (int j = 0; j < max_x ; j++){
-              allObjects.add(new Land(new Point2D (j,i)));
+				allObjects.add(new Land(new Point2D (j,i)));
 			}
 		}
 		Random r = new Random();
@@ -90,26 +90,26 @@ public class Field implements Observer {
 		}
 		f = new Fireman (new Point2D (0,0));
 		allObjects.add(f);
-		
+
 		insertWithoutUpdate ();
 		createFires();
 		createLakes();
 		createHouse();
 		removeTrees();
 		remove();
-	
+
 		List <ImageTile> images = new ArrayList <>();
 		images.addAll(allObjects);
 		ImageMatrixGUI.getInstance().addImages(images);
 		ImageMatrixGUI.getInstance().update();
 	}
 
-	
+
 	private void createHouse() {
-		
+
 		Random r = new Random ();
 		Point2D p = null;
-		
+
 		while (p == null)
 		{
 			Point2D test = new Point2D (r.nextInt(max_x),r.nextInt(max_y));
@@ -130,39 +130,39 @@ public class Field implements Observer {
 	}
 
 	private void createLakes() {
-	
+
 		Random r = new Random ();
 
 		while (lakes.size()!= Lake.lakesNumber(max_x*max_y)) {
 
 			Point2D p = new Point2D (r.nextInt(max_x),r.nextInt(max_y));
 
-				if (fireAt(p) == null && !p.equals(new Point2D(0,0)))
-					lakes.add(p);
-			}
-	
+			if (fireAt(p) == null && !p.equals(new Point2D(0,0)))
+				lakes.add(p);
+		}
+
 		for (Point2D p1 : lakes)
 		{
 			Lake l = new Lake(p1);
 			allObjects.add(l);
 		}
 	}
-		
-	
+
+
 
 	public Fireman getF() {
 		return f;
 	}
 
 	private void removeTrees() {
-		
+
 		for (FireFightObject f : allObjects)
 		{
 			if (f instanceof Terrain && (lakeAt(f.getPosition()) || houseAt(f.getPosition())))
-					addToRemove(f);
+				addToRemove(f);
 		}
 	}
-	
+
 	public boolean lakeAt(Point2D position) {
 
 		for (FireFightObject f : allObjects)
@@ -180,7 +180,7 @@ public class Field implements Observer {
 
 		return false;
 	}
-	
+
 	private void createFires() {
 
 		Random r = new Random ();
@@ -193,7 +193,7 @@ public class Field implements Observer {
 			for (FireFightObject fo : allObjects)
 				if (fo instanceof Terrain && ((Terrain)fo).getPosition().equals(p) && !p.equals(new Point2D(0,0)))
 					fires.add(p);
-	
+
 		}
 		for (Point2D p1 : fires)
 		{
@@ -201,8 +201,8 @@ public class Field implements Observer {
 			allObjects.add(f);
 		}
 	}
-	
-	
+
+
 	public int getMax_x() {
 		return max_x;
 	}
@@ -214,19 +214,19 @@ public class Field implements Observer {
 	{
 		isToAdd.add(f);
 	}
-	
+
 	public void insertWithoutUpdate ()
 	{
 		allObjects.addAll(isToAdd);
 		isToAdd.clear();
 	}
-	
+
 	public void insert ()
 	{
 		allObjects.addAll(isToAdd);
 		for (FireFightObject f : isToAdd)
-		ImageMatrixGUI.getInstance().addImage((ImageTile)f);
-			
+			ImageMatrixGUI.getInstance().addImage((ImageTile)f);
+
 		isToAdd.clear();
 	}
 
@@ -235,34 +235,34 @@ public class Field implements Observer {
 	{
 		isToRemove.add(f);
 	}
-	
+
 	public void remove ()
 	{
 		allObjects.removeAll(isToRemove);
 		for (FireFightObject f : isToRemove)
-		ImageMatrixGUI.getInstance().removeImage((ImageTile)f);
-			
+			ImageMatrixGUI.getInstance().removeImage((ImageTile)f);
+
 		isToRemove.clear();
 	}
-	
-	
+
+
 	private void save ()
 	{
-			Scanner s = new Scanner(System.in);
-			
-			int i = 0;
-			while (i < 1 || i > 10)
-			{
-				System.out.println("Insira o slot em que pretende gravar,de 1 a 10");
-				i = s.nextInt();
-			}
-			String l = String.valueOf(i);
-			
-			try {
+		Scanner s = new Scanner(System.in);
+
+		int i = 0;
+		while (i < 1 || i > 10)
+		{
+			System.out.println("Insira o slot em que pretende gravar,de 1 a 10");
+			i = s.nextInt();
+		}
+		String l = String.valueOf(i);
+
+		try {
 			PrintWriter pw = new PrintWriter (new File (l));
 
 			pw.println(max_x + " " + max_y + " " + time);
-			
+
 			for (FireFightObject fo : allObjects)
 			{
 				pw.println(fo.toFile());
@@ -273,7 +273,7 @@ public class Field implements Observer {
 
 		}
 	}
-	
+
 	private void load ()
 	{
 
@@ -289,43 +289,43 @@ public class Field implements Observer {
 
 		try {
 			s = new Scanner (new File (l));
-			
+
 		} catch (FileNotFoundException e) {
-	
+
 			e.printStackTrace();
 		}
-		
+
 		String line = s.nextLine();
 		String [] tokens = line.split(" ");
-		
 
-			time = (Integer.valueOf(tokens[2]));  
-			
-			for (FireFightObject fo: allObjects)                        
-			{
-				addToRemove(fo);
-			}
-			remove();
 
-			while(s.hasNextLine())
-			{
-				line = s.nextLine();
-			    tokens = line.split(" ");
-				FireFightObject fo = FireFightObject.newFireFightObject (tokens);
-				isToAdd.add(fo);  
-			}
-			for (FireFightObject fo: isToAdd)
-			{
-						if (fo instanceof Terrain)                      
-						assignLand((Terrain)fo);
+		time = (Integer.valueOf(tokens[2]));  
 
-				if (fo instanceof Fireman)                        
-					f = (Fireman)fo;
-			}
-			
-			insert();
+		for (FireFightObject fo: allObjects)                        
+		{
+			addToRemove(fo);
+		}
+		remove();
+
+		while(s.hasNextLine())
+		{
+			line = s.nextLine();
+			tokens = line.split(" ");
+			FireFightObject fo = FireFightObject.newFireFightObject (tokens);
+			isToAdd.add(fo);  
+		}
+		for (FireFightObject fo: isToAdd)
+		{
+			if (fo instanceof Terrain)                      
+				assignLand((Terrain)fo);
+
+			if (fo instanceof Fireman)                        
+				f = (Fireman)fo;
+		}
+
+		insert();
 	}
-	
+
 	public void assignLand(Terrain t)
 	{
 		for (FireFightObject f: isToAdd)
@@ -336,7 +336,7 @@ public class Field implements Observer {
 			}
 		}
 	}
-	
+
 
 	@Override
 	public void update(Observable arg0, Object a) {
@@ -346,7 +346,7 @@ public class Field implements Observer {
 			int key = (Integer)a;
 			if (key == KEY_SAVE)                          
 				save();
-	
+
 			if (key == KEY_LOAD)  
 				load();
 			if (Direction.isDirection(key)) {
@@ -367,9 +367,9 @@ public class Field implements Observer {
 				}
 				else
 				{
-				List <FireFightObject> interact = listaSpot (p);
-				for (FireFightObject fo : interact)
-					((Interactable)fo).interact();
+					List <FireFightObject> interact = listaSpot (p);
+					for (FireFightObject fo : interact)
+						((Interactable)fo).interact();
 
 					for (FireFightObject obj : allObjects)
 
@@ -382,7 +382,7 @@ public class Field implements Observer {
 				//removeSmokes();
 				randomFire();
 			}
-            
+
 			lastkey = key;
 			insert ();         
 			remove();
@@ -391,53 +391,43 @@ public class Field implements Observer {
 				+ "       " +  "Wood : " + f.getWood() + "                      " +       "Time: " + time + " : " + timeLim +
 				"                                 Fires: " + nFires() + " : " + (int)(max_x*max_y*0.3));
 		ImageMatrixGUI.getInstance().update();
-		
+
 		checkStatus();
 	}
-		
-	
+
+
 
 
 	private void checkStatus() {
-		Object[] options = {"Restart", "Quit"};
-		
+
 		if (nFires() >= (int)(max_x*max_y*0.3)) {
-			int i=JOptionPane.showOptionDialog(null, "Perdeu! Limite de fogos excedidos", "InfoBox: " + "Game OVER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options);
+			JOptionPane.showMessageDialog(null,"Perdeu! Limite de fogos excedidos! GAME OVER!");
 			//throw new IllegalStateException ("Perdeu! Limite de fogos excedidos!");
-			if(i == 0)
-				restart();
-			else
-				quit();
+			quit();
 		}
-		
+
 		if (time >= timeLim) {
-			int i = JOptionPane.showOptionDialog(null, "Perdeu! Limite de tempo excedido", "InfoBox: " + "Game OVER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options);
+			JOptionPane.showMessageDialog(null,"Perdeu! Limite de tempo excedido! GAME OVER!");
 			//throw new IllegalStateException ("Perdeu! Limite de tempo excedido!");
-			if(i == 0)
-				restart();
-			else
-				quit();
+			quit();
 		}
 		if (nFires() == 0) {
-			int i = JOptionPane.showOptionDialog(null, "Parabens, ganhou!", "InfoBox: " + "Win", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options);
+			JOptionPane.showMessageDialog(null,"Parabens, ganhou! WIN!");
 			//throw new IllegalStateException ("Parabéns, ganhou!");
-			if(i == 0)
-				restart();
-			else
-				quit();
+			quit();
 		}
 	}
-	
+
 
 	public void quit() {
 		System.exit(0);
-		
+
 	}
 
 	public void restart() {
 		//System.exit(0);
 		//main(null);
-		
+
 	}
 
 	public Fountain fountainAt (Point2D p)
@@ -449,8 +439,8 @@ public class Field implements Observer {
 		}
 		return null;
 	}
-	
-	
+
+
 	private void randomFire() {
 
 		if (time % 40 == 0)
@@ -506,7 +496,7 @@ public class Field implements Observer {
 		}
 	}
 
-/*	private void removeSmokes() {
+	/*	private void removeSmokes() {
 
 		List <Smoke> smokes = new ArrayList <>();
 		for (FireFightObject f : allObjects)
@@ -537,9 +527,9 @@ public class Field implements Observer {
 		}
 	}
 
-	*/
+	 */
 	private List<Fire> fireList() {
-	
+
 		List <Fire> fires = new ArrayList <>();
 		for (FireFightObject f : allObjects)
 		{
@@ -561,11 +551,11 @@ public class Field implements Observer {
 		return null;
 	}
 
-	
+
 	private void randomPlane() {              // VA discreta variável  - aparece numa fila com uma probabilidade proporcional à percentagem de fogos dessa fila face ao total
-		
+
 		Random r = new Random ();
-		
+
 		double a = 0;
 		boolean found = false;
 		int count = 0;
@@ -587,8 +577,8 @@ public class Field implements Observer {
 				count++;
 			}
 		}
-		
-/*
+
+		/*
 		for (int i = 0; i < max_x; i++)
 		{
 			if (planeAtRow (i) == null)
@@ -600,13 +590,13 @@ public class Field implements Observer {
 				}
 			}
 		}
-*/
+		 */
 	}
 
 	private void newPlane (int x) {
 		Plane p = new Plane (new Point2D(x,max_y-1));
 		addToInsert(p);
-		
+
 	}
 
 	public int nFireatRow(int i) {
@@ -623,9 +613,9 @@ public class Field implements Observer {
 
 	}
 
-	
+
 	public int nFires() {
-		
+
 		int c = 0;
 		for (FireFightObject f : allObjects)
 		{
@@ -653,8 +643,8 @@ public class Field implements Observer {
 	{
 		return ImageMatrixGUI.getInstance().isWithinBounds(p);
 	}
-	
-	
+
+
 	private List <FireFightObject> listaSpot (Point2D p)     
 	{
 		List <FireFightObject> objects = new ArrayList <> ();
@@ -667,9 +657,9 @@ public class Field implements Observer {
 		}
 		return objects;
 	}
-	
+
 	private List <Point2D> neighboursOf (Point2D p) {
-		
+
 		List <Point2D> result = new ArrayList <>();
 		List <Point2D> points = Direction.getNeighbourhoodPoints_2 (p);
 		for (Point2D p1 : points)
@@ -679,21 +669,21 @@ public class Field implements Observer {
 		}
 		return result;
 	}
-	
+
 	public Terrain terrainAt (Point2D p) {
-		
+
 		for (FireFightObject f : allObjects) {
 			if (f instanceof Terrain && f.getPosition().equals(p))
 				return (Terrain)f;
 		}
-			return null;
+		return null;
 	}
-	
+
 	public List<Terrain> burnableTerrainsAroundPosition (Point2D p) {
-		
+
 		List <Terrain> burnables = new ArrayList <> ();
 		List <Point2D> points = neighboursOf (p);
-		
+
 		for (Point2D p1 : points)
 		{
 			Terrain t = terrainAt(p1);
@@ -705,27 +695,27 @@ public class Field implements Observer {
 		}
 		return burnables;
 	}
-	
+
 	public Fire fireAt (Point2D p){
-		
+
 		for (FireFightObject f : allObjects)
 		{
-		if (f instanceof Fire && f.getPosition().equals(p))
-			return (Fire)f;
+			if (f instanceof Fire && f.getPosition().equals(p))
+				return (Fire)f;
 		}
 		return null;
 	}
-	
+
 	public void extinguish (Point2D p)
 	{
 		Fire f = fireAt (p);
-		
+
 		if (f != null)
 		{
 			addToRemove(f);
 		}
 	}
-	
+
 	public boolean houseNear (Point2D p)
 	{
 		List <Point2D> points = neighboursOf (p);
@@ -736,7 +726,7 @@ public class Field implements Observer {
 		}
 		return false;
 	}
-	
+
 
 	private void play() {
 		ImageMatrixGUI.getInstance().addObserver(this);
@@ -747,10 +737,10 @@ public class Field implements Observer {
 		assert (instance != null);
 		return instance;
 	}
-	
+
 	public static void main(String[] args) {
 		Field f = new Field(22,12);
 		f.play();
 	}
-	
+
 }
