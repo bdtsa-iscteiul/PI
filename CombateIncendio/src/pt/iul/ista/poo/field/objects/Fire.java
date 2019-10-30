@@ -28,7 +28,6 @@ public class Fire extends FireFightObject implements Updatable , Interactable {
 
 	@Override
 	public void update() {
-		Object[] options = {"Restart", "Quit"};
 
 		List <Terrain> terras = Field.getInstance().burnableTerrainsAroundPosition(getPosition());
 
@@ -42,12 +41,9 @@ public class Fire extends FireFightObject implements Updatable , Interactable {
 		{
 			Random r = new Random();
 			if (r.nextDouble() < House.burningProb()) {
-				int i = JOptionPane.showOptionDialog(null, "A casa ardeu", "InfoBox: " + "Game OVER", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options);
+				JOptionPane.showMessageDialog(null,"A casa ardeu! GAME OVER!");
 				//throw new IllegalStateException ("A casa ardeu");
-				if(i == 0)
-					Field.getInstance().restart();
-				else
-					Field.getInstance().quit();
+				Field.getInstance().quit();
 			}
 		}
 
