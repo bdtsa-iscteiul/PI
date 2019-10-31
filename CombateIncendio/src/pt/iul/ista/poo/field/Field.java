@@ -478,9 +478,11 @@ public class Field implements Observer {
 			{
 				Random r = new Random();
 				double a = r.nextDouble();
-	
+				System.out.println(f.getN()+1);
+				System.out.println("random = " + a);
+				System.out.println("smokeprob = " + f.smokeProb());
 				if (a < (double)(f.smokeProb())) {
-		
+					System.out.println("criou fumo: random = " + a + " smokeprob = " + (double)f.smokeProb());
 					Smoke s = new Smoke (p);
 					addToInsert(s);
 				}

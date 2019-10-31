@@ -75,8 +75,9 @@ public class Fire extends FireFightObject implements Updatable , Interactable {
 
 	public void setSmokeTimer() {
 		
-		n++;
-		smokeTimer = smokeTimer + n;
+		System.out.println("smokeTimer = " + smokeTimer);
+		setN(getN() + 1);
+		smokeTimer = smokeTimer + getN();
 
 	}
 
@@ -84,6 +85,16 @@ public class Fire extends FireFightObject implements Updatable , Interactable {
 	public double smokeProb() {               
 
 		return smokeTimer/55.0;
+	}
+
+
+	public int getN() {
+		return n;
+	}
+
+
+	public void setN(int n) {
+		this.n = n;
 	}
 
 }

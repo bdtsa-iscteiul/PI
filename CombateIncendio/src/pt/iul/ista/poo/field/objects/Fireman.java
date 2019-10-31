@@ -54,6 +54,11 @@ public class Fireman extends FireFightObject  {
 
 	public void setWater(double water) {
 		this.water = water;
+		
+		Random r = new Random();
+		double a = r.nextDouble()*4;
+		double x = -0.09375*(a*a)+0.375*a;
+		water =- x;
 	}
 
 	@Override
