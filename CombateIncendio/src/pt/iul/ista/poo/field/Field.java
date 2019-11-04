@@ -347,11 +347,12 @@ public class Field implements Observer {
 			int key = (Integer)a;
 			if (key == KEY_SAVE)                          
 				save();
-
+			if (key==key_space)
+				f.changeImage();
 			if (key == KEY_LOAD)  
 				load();
 			if (Direction.isDirection(key)) {
-
+				f.changeImageDefault();
 				time++;
 				Direction d = Direction.directionFor (key);
 				Vector2D v = d.asVector();

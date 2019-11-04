@@ -10,10 +10,10 @@ public class Fireman extends FireFightObject  {
 	private static final int  max_wood = 25;
 	private double water = 10;
 	private int wood = 0;
-
+	private String name;
 	public Fireman(Point2D p) {
 		super(p);
-	
+		name="fireman";
 	}
 	
 
@@ -60,11 +60,17 @@ public class Fireman extends FireFightObject  {
 		double x = -0.09375*(a*a)+0.375*a;
 		water =- x;
 	}
-
+	public void changeImage() {
+		if(getWater()!=0)
+			name="fireman1";
+	}
+	public void changeImageDefault() {
+		name="fireman";
+	}
 	@Override
 	public String getName() {
 		
-		return "fireman";
+		return name;
 	}
 
 	@Override
