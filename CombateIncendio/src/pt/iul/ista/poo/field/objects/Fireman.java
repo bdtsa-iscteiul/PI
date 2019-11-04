@@ -44,13 +44,13 @@ public class Fireman extends FireFightObject  {
 	
 	public void subWater(){
 		
-		Random r = new Random();
-		water = water - 2 - r.nextGaussian() * Math.sqrt(1);  // VA Continua , curva de gauss com media de 2 litros
-		
+		//Random r = new Random();
+		//water = water - 2 - r.nextGaussian() * Math.sqrt(1);  // VA Continua , curva de gauss com media de 2 litros
+		water = water-cosine(0,4);
 		if (water < 0)
 			water = 0;
 	}
-
+	
 
 	public void setWater(double water) {
 		this.water = water;
@@ -92,4 +92,15 @@ public class Fireman extends FireFightObject  {
 		if (wood < max_wood)
 		wood++;
 	}
+	
+	public double cosine( double xMin, double xMax ){
+		Random r= new Random();
+		//U(-1,1)
+		double g =r.nextDouble()*2-1;
+		assert( xMin < xMax );
+		double a = 0.5 * ( xMin + xMax ); // location parameter
+		double b = ( xMax - xMin ) / Math.PI; // scale parameter
+		return a + b * Math.asin(g);
+	}
+	
 }
